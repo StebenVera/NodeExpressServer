@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login Google</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="1037000927925-aathopcm653fpgmau39f0hkcfv0rrih4.apps.googleusercontent.com">
+</head>
+<body>
+        <img src="https://intense-sands-14490.herokuapp.com/foto/usuarios/5cb0d19177eab120b8883c3a-703.jpg/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7InJvbGUiOiJBRE1JTl9ST0xFIiwiZXN0YWRvIjp0cnVlLCJnb29nbGUiOmZhbHNlLCJfaWQiOiI1Y2IxMGY2N2U3NzQxODFkZDQ1ZDgzYTMiLCJub21icmUiOiJkYWl2ZXIgc3RlYmVuIGFyYWdvbSB2ZXJhIiwiZW1haWwiOiJzdGViZW52ZXJhQGdtYWlsLmNvbSIsIl9fdiI6MH0sImlhdCI6MTU1ODkxMDM5NSwiZXhwIjoxNTU5MDgzMTk1fQ.CM-exfyirMZ3p5njsL8hpjsuPCXj5JhGFhNuFCk27kg" alt="Imagen de perfil">
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <a href="#" onclick="signOut();">Sign out</a>
+
+        <script>
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                var id_token = googleUser.getAuthResponse().id_token;
+                var xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'https://intense-sands-14490.herokuapp.com/google');
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onload = function() {
+                    console.log('Signed in as: ' + xhr.responseText);
+                    };
+                    xhr.send('idtoken=' + id_token);
+                }
+
+                function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                console.log('User signed out.');
+                });
+                }
+        </script>
+</body>
+</html>
